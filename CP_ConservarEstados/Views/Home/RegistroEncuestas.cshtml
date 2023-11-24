@@ -19,19 +19,19 @@
     <div class="card-body">
         <div class="row">
             <div class="col-12">
-                <button type="button" class="btn btn-success"> Crear Nuevo</button>
+                <button type="button" class="btn btn-success">Agregar</button>
             </div>
         </div>
 
         <hr />
 
-        <table class="display cell-border" style="width: 100%">
+        <table class="tablaListaEncuestas display cell-border" style="width: 100%">
             <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>Nombre</th>
-                    <th>...</th>
-                    <th>...</th>
+                    <th># Posición</th>
+                    <th>Nombre Lenguaje</th>
+                    @*<th>Clasificación %</th>
+                    <th>Diferencia %</th*@>
                 </tr>
             </thead>
 
@@ -46,7 +46,31 @@
 @section scripts{
     <script>
 
+        //debugger;
 
-        
+        var tabladata;
+
+        alert("Cargo ");
+
+        tabladata = $(".tablaListaEncuestas").DataTable({
+            responsive: true,
+            ordering: false,
+            "ajax": {
+                url: '@Url.Action("ListaLenguajes", "Home")',
+                type: "GET",
+                dataType: "json"
+            },
+            "colums": [                
+                { "data": "idLenguajeProgram" },
+                { "data": "nombreLenguajeProgram" }
+                //{ "data": "puntuacionLenguaje" },
+                //{ "data": "diferenciaPuntuacionLenguaje" }
+            ]
+
+        });
+
+        alert("Cargo 2");
+
+
     </script>    
     }

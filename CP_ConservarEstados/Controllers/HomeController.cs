@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CE_Entidad;
+using CN_Negocio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -18,9 +20,14 @@ namespace CP_ConservarEstados.Controllers
          return View();
       }
 
-      public ActionResult Contact()
+      //Consultar la lista de lenguajes con puntuacion  
+      public JsonResult ListaLenguajes()
       {
-         return View();
+         List<lenguajeProgramacion> listaLenguajes = new List<lenguajeProgramacion>();
+
+         listaLenguajes = new CNX_ET_LenguajeProgramacion().listaLenguajesProgramacion();
+
+         return Json( new { data = listaLenguajes } , JsonRequestBehavior.AllowGet);
       }
    }
 }

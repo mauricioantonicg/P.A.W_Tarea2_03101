@@ -487,6 +487,16 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CE_Entidad\CE_Entidad.csproj">
+      <Project>{9DC5F047-4E2E-4C83-94CB-04C7A0D2EE72}</Project>
+      <Name>CE_Entidad</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CN_Negocio\CN_Negocio.csproj">
+      <Project>{F3019F1B-5CBE-4168-86B8-65B3B2E29D0B}</Project>
+      <Name>CN_Negocio</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
