@@ -24,7 +24,7 @@ namespace CD_Datos
             using (SqlConnection conexionBD = new SqlConnection(BDConexion.conexionBD))
             {
                //String a ejecutar en la base de datos 
-               string query = "select * from lenguajeProgramacion";
+               string query = "select * from lenguajeProgramacion order by puntuacionLenguaje desc";
 
                //Crear el envio del sript a ejecutar en la base de datos 
                SqlCommand cmd = new SqlCommand(query, conexionBD);
@@ -33,9 +33,12 @@ namespace CD_Datos
                //Abrir conexion con la base de datos
                conexionBD.Open();
 
+               int contador = 1;
+
                //Ejecutar o enviar el script a la base de datos con la consulta 
                using (SqlDataReader reader = cmd.ExecuteReader())
                {
+
 
                   //Leer la respuesta de la base de datos
                   while (reader.Read())
@@ -44,10 +47,10 @@ namespace CD_Datos
                      //Crear objeto lenguajeProgramacion 
                      listaLenguajesBD.Add(new lenguajeProgramacion()
                      {
-                        idLenguajeProgram = Convert.ToInt32(reader["idLenguajeProgram"]),
+                        idLenguajeProgram = contador++,
                         nombreLenguajeProgram = reader["nombreLenguajeProgram"].ToString(),
-                        puntuacionLenguaje = Convert.ToDecimal(reader["puntuacionLenguaje"])
-                     });
+                        puntuacionLenguaje = Convert.ToDecimal(reader["puntuacionLenguaje"]),
+                     }); 
                   }
                }
 

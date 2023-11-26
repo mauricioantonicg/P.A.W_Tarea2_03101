@@ -5,38 +5,31 @@
 
 <h2>Registro de Encuestas</h2>
 
-<ol class="breadcrumb mb-4 mt-4">
-    <li class="breadcrumb-item"><a href="index.html">Resumen</a></li>
-    <li class="breadcrumb-item active">Usuarios</li>
-</ol>
-
-<div class="card">
+<div class="card mt-4">
 
     <div class="card-header">
-        <i class="fas fa-user me-1"></i> Lista de encuestas 
+        <i class="fas fa-list me-1"></i> Lista de encuestas 
     </div>
 
     <div class="card-body">
         <div class="row">
             <div class="col-12">
-                <button type="button" class="btn btn-success">Agregar</button>
+                <button type="button" class="btn btn-primary">Agregar Encuesta</button>
             </div>
         </div>
 
         <hr />
 
-        <table class="tablaListaEncuestas display cell-border" style="width: 100%">
+        <table id="tablaListaEncuestas" class="display cell-border" style="width: 100%">
             <thead>
                 <tr>
                     <th># Posición</th>
                     <th>Nombre Lenguaje</th>
-                    @*<th>Clasificación %</th>
-                    <th>Diferencia %</th*@>
+                    <th>Clasificación %</th>
+                    <th>Diferencia %</th>
                 </tr>
             </thead>
-
             <tbody>
-
             </tbody>
         </table>
 
@@ -46,31 +39,31 @@
 @section scripts{
     <script>
 
-        //debugger;
+        $(document).ready(function () {
 
-        var tabladata;
+            var tabladata;
 
-        alert("Cargo ");
+            alert("Cargo ");
 
-        tabladata = $(".tablaListaEncuestas").DataTable({
-            responsive: true,
-            ordering: false,
-            "ajax": {
-                url: '@Url.Action("ListaLenguajes", "Home")',
-                type: "GET",
-                dataType: "json"
-            },
-            "colums": [                
-                { "data": "idLenguajeProgram" },
-                { "data": "nombreLenguajeProgram" }
-                //{ "data": "puntuacionLenguaje" },
-                //{ "data": "diferenciaPuntuacionLenguaje" }
-            ]
+            tabladata = $("#tablaListaEncuestas").DataTable({
+                responsive: true,
+                ordering: false,
+                "ajax": {
+                    url: '@Url.Action("ListaLenguajes", "Home")',
+                    type: "GET",
+                    dataType: "json"
+                },
+                "columnDefs": [
+                    { "targets": [0], data: "idLenguajeProgram" },
+                    { "targets": [1], data: "nombreLenguajeProgram" },
+                    { "targets": [2], data: "puntuacionLenguaje" },
+                    { "targets": [3], data: "diferenciaPuntuacionLenguaje", "render": function (data) { return "+" + data + "%" } },
+                ],
+            });
+
+            alert("Cargo 2");
 
         });
-
-        alert("Cargo 2");
-
 
     </script>    
     }
