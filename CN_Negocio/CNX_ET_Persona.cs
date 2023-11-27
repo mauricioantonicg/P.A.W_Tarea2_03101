@@ -34,6 +34,9 @@ namespace CN_Negocio
             nuevaPuntLengPrima = Convert.ToDecimal(unDecimal);
             unDecimal = "0";
 
+            //La actualizacion del puntaje del lenguaje primario debe ir aqui ya que es posible que el
+            //usuario elija las dos veces el mismo lenguaje y esto afecta la actualizacion del puntaje
+
             nuevaPuntLengSecun = person.ConsultarPuntuacionLenguaje(personaa.idLenguajeProgSecundario) + 0.5m;
             unDecimal = nuevaPuntLengSecun.ToString("0.#");
             nuevaPuntLengSecun = Convert.ToDecimal(unDecimal);

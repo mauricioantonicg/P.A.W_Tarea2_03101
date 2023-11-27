@@ -44,24 +44,24 @@
                 <h5 class="modal-title" id="exampleModalLabel">Ingrese los datos de la encuesta</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body g-2">
+            <div class="modal-body">
 
-                <div class="row">
+                <div class="row g-2">
 
                     <div class="col-sm-6">
                         <label for="txt_nombrePersona" class="badge bg-secondary">Nombre</label>
-                        <input type="text" id="txt_nombrePersona" class="form-control">
+                        <input type="text" id="txt_nombrePersona" class="form-control mw-100">
                     </div>
 
                     <div class="col-sm-6">
                         <label for="txt_apellido1" class="badge bg-secondary">Apellido</label>
-                        <input type="text" id="txt_apellido1" class="form-control">
+                        <input type="text" id="txt_apellido1" class="form-control mw-100">
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="slt_pais" class="badge bg-secondary mt-3">País</label>
-                        <select id="slt_pais" class="form-select" aria-label="Default select example">
-                            <option selected>Seleccione el país</option>
+                        <label for="slt_pais" class="badge bg-secondary">País</label>
+                        <select id="slt_pais" class="form-select mw-100" aria-label="Default select example">
+                            <option value="0">Seleccione el país</option>
                             <option value="1">Belice</option>
                             <option value="2">Costa rica</option>
                             <option value="3">El Salvador</option>
@@ -73,9 +73,9 @@
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="slt_rolPersona" class="badge bg-secondary mt-3">Rol TI</label>
-                        <select id="slt_rolPersona" class="form-select">
-                            <option selected>Seleccione el rol de TI</option>
+                        <label for="slt_rolPersona" class="badge bg-secondary">Rol TI</label>
+                        <select id="slt_rolPersona" class="form-select mw-100">
+                            <option value="0">Seleccione el rol de TI</option>
                             <option value="1">Programador Front-end</option>
                             <option value="2">Programador Back-end</option>
                             <option value="3">Analista de sistemas</option>
@@ -85,9 +85,9 @@
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="slt_LenguajePrimario" class="badge bg-secondary mt-3">Primer lenguaje</label>
-                        <select id="slt_LenguajePrimario" class="form-select">
-                            <option selected>Seleccione el lenguaje</option>
+                        <label for="slt_LenguajePrimario" class="badge bg-secondary">Primer lenguaje</label>
+                        <select id="slt_LenguajePrimario" class="form-select mw-100">
+                            <option value="0">Seleccione el lenguaje</option>
                             <option value="1">Java</option>
                             <option value="2">C</option>
                             <option value="3">Python</option>
@@ -112,10 +112,9 @@
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="slt_LenguajeSecundario" class="badge bg-secondary mt-3">Segundo lenguaje</label>
-                        <select id="slt_LenguajeSecundario" class="form-select">
-                            <option selected>Seleccione el lenguaje</option>
-                            <option selected>Seleccione el lenguaje</option>
+                        <label for="slt_LenguajeSecundario" class="badge bg-secondary">Segundo lenguaje</label>
+                        <select id="slt_LenguajeSecundario" class="form-select mw-100">
+                            <option value="0">Seleccione el lenguaje</option>
                             <option value="1">Java</option>
                             <option value="2">C</option>
                             <option value="3">Python</option>
@@ -141,6 +140,13 @@
 
                 </div>
 
+                @*Mensaje de error de validacion*@
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div id="mensajeError" class="alert alert-danger" role="alert"></div>                        
+                    </div>                    
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -159,7 +165,6 @@
 
         //Llenar datatable con los datos de las encuestas actuales
         function llenarListaEncuestas() {
-            alert("Se llenara el datatable");
 
             var tabladata;
 
@@ -183,12 +188,13 @@
         //Abrir el formulario modal para agregar una encuesta
         function abrirFormAgEncModal() {
             $("#form_AgregarEncuesta").modal("show");
+            $("#mensajeError").hide();
         }
 
         //Guardar los datos de una nueva encuesta
         function GuardarRegEncuesta() {
-
-            alert("Inicia guardar encuesta");
+            //Ocultar mensaje con error de validacion
+            $("#mensajeError").hide();
 
             //Datos del formulario encuesta
             var nombrePersona = $("#txt_nombrePersona").val();
@@ -207,8 +213,6 @@
                 idLenguajeProgSecundario
             }
 
-            alert(idLenguajeProgSecundario);
-
             //Enviar datos al controlador
             jQuery.ajax({
                 url: '@Url.Action("RegistrarNuevaEncuesta", "Home")',
@@ -218,9 +222,21 @@
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
 
-                    debugger;
+                    //debugger;
 
-                    var resultado = data;
+                    var resultado = data.resultado;
+                    var mensaje = data.mensaje;
+
+                    //Validacion de campos del formulario
+                    if (resultado == 10) {
+                        $("#mensajeError").show();
+                        $("#mensajeError").text(mensaje);
+                    }
+
+                    //Fallo en la conexion con la base de datos
+                    if (resultado == 0) {
+                        alert("Fallo la conexión con la base de datos " + resultado);
+                    }
 
                     //Se registro la encuesta y actualizaron los puntajes de lenguaje 1 y 2
                     if (resultado == 1) {
@@ -230,14 +246,14 @@
                         window.location.href = '@Url.Action("RegistroEncuestas", "Home")';
                     }
 
-                    //Se almacenaron los datos de la encuesta pero falla la consuta de puntuacion lenguaje 1 e
-                    //incremento de puntuaciones de los dos lenguajes
+                    //Se almacenaron los datos de la encuesta pero fallo la consuta de puntuacion lenguaje 1 e
+                    //Fallo el incremento de puntuaciones de los dos lenguajes
                     if (resultado == 2) {
                         alert("Fallo la consultalta de puntuacion lenguaje primario " + resultado);
                     }
 
-                    //Se almacenaron los datos de la encuesta pero falla la consuta de puntuacion lenguaje 1 e
-                    //incremento de puntuaciones de los dos lenguajes
+                    //Se almacenaron los datos de la encuesta pero falla la consuta de puntuacion lenguaje 2 e
+                    //Fallo el incremento de puntuaciones de los dos lenguajes
                     if (resultado == 3) {
                         alert("Fallo la consulta de puntuacion lenguaje secundario " + resultado);
                     }

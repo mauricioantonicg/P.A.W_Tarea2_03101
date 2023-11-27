@@ -70,7 +70,7 @@ namespace CD_Datos
       //Registrar una nueva persona en la tabla persona de la base de datos  
       public int RegistrarNuevaEncuesta(persona person)
       {
-         int resultado = 1;
+         int resultado = -1;
 
          try
          {
