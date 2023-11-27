@@ -8,13 +8,13 @@
 <div class="card mt-4">
 
     <div class="card-header">
-        <i class="fas fa-list me-1"></i> Lista de encuestas 
+        <i class="fas fa-list me-1"></i> Lista de encuestas
     </div>
 
     <div class="card-body">
         <div class="row">
             <div class="col-12">
-                <button type="button" class="btn btn-primary">Agregar Encuesta</button>
+                <button type="button" class="btn btn-primary" onclick="abrirFormAgEncModal()">Agregar Encuesta</button>
             </div>
         </div>
 
@@ -36,14 +36,132 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="form_AgregarEncuesta" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white ">
+                <h5 class="modal-title" id="exampleModalLabel">Ingrese los datos de la encuesta</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body g-2">
+
+                <div class="row">
+
+                    <div class="col-sm-6">
+                        <label for="txt_nombrePersona" class="badge bg-secondary">Nombre</label>
+                        <input type="text" id="txt_nombrePersona" class="form-control">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="txt_apellido1" class="badge bg-secondary">Apellido</label>
+                        <input type="text" id="txt_apellido1" class="form-control">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="slt_pais" class="badge bg-secondary mt-3">País</label>
+                        <select id="slt_pais" class="form-select" aria-label="Default select example">
+                            <option selected>Seleccione el país</option>
+                            <option value="1">Belice</option>
+                            <option value="2">Costa rica</option>
+                            <option value="3">El Salvador</option>
+                            <option value="4">Guatemala</option>
+                            <option value="5">Honduras</option>
+                            <option value="6">Nicaragua</option>
+                            <option value="7">Panamá</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="slt_rolPersona" class="badge bg-secondary mt-3">Rol TI</label>
+                        <select id="slt_rolPersona" class="form-select">
+                            <option selected>Seleccione el rol de TI</option>
+                            <option value="1">Programador Front-end</option>
+                            <option value="2">Programador Back-end</option>
+                            <option value="3">Analista de sistemas</option>
+                            <option value="4">Diseñador gráfico</option>
+                            <option value="5">Administrador de proyectos de TI</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="slt_LenguajePrimario" class="badge bg-secondary mt-3">Primer lenguaje</label>
+                        <select id="slt_LenguajePrimario" class="form-select">
+                            <option selected>Seleccione el lenguaje</option>
+                            <option value="1">Java</option>
+                            <option value="2">C</option>
+                            <option value="3">Python</option>
+                            <option value="4">C++</option>
+                            <option value="5">C#</option>
+                            <option value="6">Visual Basic. NET</option>
+                            <option value="7">SQL</option>
+                            <option value="8">PHP</option>
+                            <option value="9">Ruby</option>
+                            <option value="10">R</option>
+                            <option value="11">Rust</option>
+                            <option value="12">TypeScript</option>
+                            <option value="13">Swift</option>
+                            <option value="14">Perl</option>
+                            <option value="15">Kotlin</option>
+                            <option value="16">Go</option>
+                            <option value="17">Scheme</option>
+                            <option value="18">Erlang</option>
+                            <option value="19">Pascal</option>
+                            <option value="20">Postscript</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="slt_LenguajeSecundario" class="badge bg-secondary mt-3">Segundo lenguaje</label>
+                        <select id="slt_LenguajeSecundario" class="form-select">
+                            <option selected>Seleccione el lenguaje</option>
+                            <option selected>Seleccione el lenguaje</option>
+                            <option value="1">Java</option>
+                            <option value="2">C</option>
+                            <option value="3">Python</option>
+                            <option value="4">C++</option>
+                            <option value="5">C#</option>
+                            <option value="6">Visual Basic. NET</option>
+                            <option value="7">SQL</option>
+                            <option value="8">PHP</option>
+                            <option value="9">Ruby</option>
+                            <option value="10">R</option>
+                            <option value="11">Rust</option>
+                            <option value="12">TypeScript</option>
+                            <option value="13">Swift</option>
+                            <option value="14">Perl</option>
+                            <option value="15">Kotlin</option>
+                            <option value="16">Go</option>
+                            <option value="17">Scheme</option>
+                            <option value="18">Erlang</option>
+                            <option value="19">Pascal</option>
+                            <option value="20">Postscript</option>
+                        </select>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="GuardarRegEncuesta()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section scripts{
     <script>
 
         $(document).ready(function () {
+            llenarListaEncuestas();
+        });
+
+        //Llenar datatable con los datos de las encuestas actuales
+        function llenarListaEncuestas() {
+            alert("Se llenara el datatable");
 
             var tabladata;
-
-            alert("Cargo ");
 
             tabladata = $("#tablaListaEncuestas").DataTable({
                 responsive: true,
@@ -60,10 +178,88 @@
                     { "targets": [3], data: "diferenciaPuntuacionLenguaje", "render": function (data) { return "+" + data + "%" } },
                 ],
             });
+        }
 
-            alert("Cargo 2");
+        //Abrir el formulario modal para agregar una encuesta
+        function abrirFormAgEncModal() {
+            $("#form_AgregarEncuesta").modal("show");
+        }
 
-        });
+        //Guardar los datos de una nueva encuesta
+        function GuardarRegEncuesta() {
 
-    </script>    
-    }
+            alert("Inicia guardar encuesta");
+
+            //Datos del formulario encuesta
+            var nombrePersona = $("#txt_nombrePersona").val();
+            var apellido1 = $("#txt_apellido1").val();
+            var idPais = $("#slt_pais").val();
+            var idRolPersona = $("#slt_rolPersona").val();
+            var idLenguajeProgPrimario = $("#slt_LenguajePrimario").val();
+            var idLenguajeProgSecundario = $("#slt_LenguajeSecundario").val();
+
+            var datosEncuesta = {
+                nombrePersona,
+                apellido1,
+                idPais,
+                idRolPersona,
+                idLenguajeProgPrimario,
+                idLenguajeProgSecundario
+            }
+
+            alert(idLenguajeProgSecundario);
+
+            //Enviar datos al controlador
+            jQuery.ajax({
+                url: '@Url.Action("RegistrarNuevaEncuesta", "Home")',
+                type: "POST",
+                data: JSON.stringify({ datosEncuesta: datosEncuesta }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    debugger;
+
+                    var resultado = data;
+
+                    //Se registro la encuesta y actualizaron los puntajes de lenguaje 1 y 2
+                    if (resultado == 1) {
+                        alert("Encuesta registrada satisfactoriamente " + resultado);
+
+                        //Recargar la pagina de la encuesta
+                        window.location.href = '@Url.Action("RegistroEncuestas", "Home")';
+                    }
+
+                    //Se almacenaron los datos de la encuesta pero falla la consuta de puntuacion lenguaje 1 e
+                    //incremento de puntuaciones de los dos lenguajes
+                    if (resultado == 2) {
+                        alert("Fallo la consultalta de puntuacion lenguaje primario " + resultado);
+                    }
+
+                    //Se almacenaron los datos de la encuesta pero falla la consuta de puntuacion lenguaje 1 e
+                    //incremento de puntuaciones de los dos lenguajes
+                    if (resultado == 3) {
+                        alert("Fallo la consulta de puntuacion lenguaje secundario " + resultado);
+                    }
+
+                    //Se almacenaron los datos de la encuesta pero fallo la actualizacion de puntuacion lenguaje 1
+                    if (resultado == 4) {
+                        alert("Fallo el incremento de puntuacion lenguaje primario " + resultado);
+                    }
+
+                    //Se almacenaron los datos de la encuesta pero fallo la actualizacion de puntuacion lenguaje 2
+                    if (resultado == 5) {
+                        alert("Fallo el incremento de puntuacion lenguaje secundario " + resultado);
+                    }
+                },
+                error: function (error) {
+                    alert(error);
+                },
+                beforedSend: function () {
+
+                }
+            });
+        }
+
+    </script>
+}

@@ -68,10 +68,9 @@ namespace CD_Datos
       }
 
       //Registrar una nueva persona en la tabla persona de la base de datos  
-      public int RegistrarPersona(persona person, out string Mensaje)
+      public int RegistrarNuevaEncuesta(persona person)
       {
-         int resultado = 0;
-         Mensaje = string.Empty;
+         int resultado = 1;
 
          try
          {
@@ -79,17 +78,14 @@ namespace CD_Datos
             using (SqlConnection conexionBD = new SqlConnection(BDConexion.conexionBD))
             {
                //Crear el envio del sript a ejecutar en la base de datos 
-               SqlCommand cmd = new SqlCommand("sp_RegistrarPersona", conexionBD);
+               SqlCommand cmd = new SqlCommand("sp_AgregarEncuesta", conexionBD);
                //Datos de la persona 
-               cmd.Parameters.AddWithValue("idPersona", person.idPersona);
                cmd.Parameters.AddWithValue("nombrePersona", person.nombrePersona);
                cmd.Parameters.AddWithValue("apellido1", person.apellido1);
                cmd.Parameters.AddWithValue("idPais", person.idPais);
                cmd.Parameters.AddWithValue("idRolPersona", person.idRolPersona);
                cmd.Parameters.AddWithValue("idLenguajeProgPrimario", person.idLenguajeProgPrimario);
                cmd.Parameters.AddWithValue("idLenguajeProgSecundario", person.idLenguajeProgSecundario);
-               cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 300).Direction = ParameterDirection.Output;
-               cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
                cmd.CommandType = CommandType.StoredProcedure;
 
                //Abrir conexion con la base de datos
@@ -98,18 +94,90 @@ namespace CD_Datos
                //Ejecutar o enviar el script a la base de datos con la consulta 
                cmd.ExecuteReader();
 
-               resultado = Convert.ToInt32(cmd.Parameters["Resultado"].Value);
-               Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+               resultado = 1;
             }
          }
          catch (Exception ex)
          {
             resultado = 0;
-            Mensaje = ex.Message;
+         }         
+
+         //Retornar si se guardo el registro correctamente 
+         return resultado;
+      }
+
+      //Incrementar la puntuacion del lenguaje
+      public int IncrementarPuntuacionLenguaje(string lengPrim, decimal puntuacion)
+      {
+         int resultado = 1;
+
+         try
+         {
+            //Crear instancia de conexion a la base de datos 
+            using (SqlConnection conexionBD = new SqlConnection(BDConexion.conexionBD))
+            {
+               //Crear el envio del sript a ejecutar en la base de datos 
+               SqlCommand cmd = new SqlCommand("sp_PuntuarLenguaje", conexionBD);
+               //Datos de la persona 
+               cmd.Parameters.AddWithValue("idLenguajeProgram", lengPrim);
+               cmd.Parameters.AddWithValue("puntuacionLenguaje", puntuacion);
+               cmd.CommandType = CommandType.StoredProcedure;
+
+               //Abrir conexion con la base de datos
+               conexionBD.Open();
+
+               //Ejecutar o enviar el script a la base de datos con la consulta 
+               cmd.ExecuteReader();
+
+               resultado = 1;
+            }
+         }
+         catch (Exception ex)
+         {
+            resultado = -1;
          }
 
          //Retornar si se guardo el registro correctamente 
          return resultado;
       }
+
+      //Consultar la puntuacion del lenguaje 
+      public decimal ConsultarPuntuacionLenguaje(string idLenguaje)
+      {
+         decimal puntuacionActual = -1;
+
+         try
+         {
+            using (SqlConnection conexionBD = new SqlConnection(BDConexion.conexionBD))
+            {
+               //String a ejecutar en la base de datos 
+               string query = "select puntuacionLenguaje from lenguajeProgramacion where idLenguajeProgram = " + idLenguaje;
+
+               //Crear el envio del sript a ejecutar en la base de datos 
+               SqlCommand cmd = new SqlCommand(query, conexionBD);
+               cmd.CommandType = CommandType.Text;
+
+               //Abrir conexion con la base de datos
+               conexionBD.Open();
+
+               //Ejecutar o enviar el script a la base de datos con la consulta 
+               using (SqlDataReader reader = cmd.ExecuteReader())
+               {
+                  //Leer la respuesta de la base de datos
+                  while (reader.Read())
+                  {
+                     //Crear objeto persona y agregarlo a la lista de personas 
+                     puntuacionActual = Convert.ToDecimal(reader["puntuacionLenguaje"]);
+                  }
+               }
+            }
+         }catch (Exception ex)
+         {
+            puntuacionActual = -1;
+         }
+
+         //Retornar si se guardo el registro correctamente 
+         return puntuacionActual;
+      } 
    }
 }
